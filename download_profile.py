@@ -35,19 +35,23 @@ BROWSERS = {
 def main():
     if len(sys.argv) < 2:
         print(f"Kullanım: {sys.argv[0]} <profil_adı> [kaynak]")
-        print(f"Kaynaklar: {', '.join(BROWSERS)} (varsayılan: file)")
+        print(f"Kaynaklar: {', '.join(BROWSERS)}, veya cookie dosya yolu")
         sys.exit(1)
 
     profile = sys.argv[1]
     source = sys.argv[2] if len(sys.argv) > 2 else "file"
 
-    if source not in BROWSERS:
-        print(f"Desteklenmeyen kaynak: {source}")
-        print(f"Seçenekler: {', '.join(BROWSERS)}")
+    if source not in BROWSERS and os.path.isfile(source):
+        with open(source) as f:
+            cookies = json.load(f)
+    elif source in BROWSERS:
+        cookies = BROWSERS[source]()
+    else:
+        print(f"Desteklenmeyen kaynak veya dosya bulunamadı: {source}")
+        print(f"Seçenekler: {', '.join(BROWSERS)}, veya cookie dosya yolu")
         sys.exit(1)
 
     print(f"[*] {source} cookie'leri alınıyor...")
-    cookies = BROWSERS[source]()
 
     if "sessionid" not in cookies:
         print("[!] Instagram oturumu bulunamadı.")
