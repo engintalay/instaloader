@@ -1,0 +1,8 @@
+.venv/
+*cookies*.json
+*.jpg
+*.mp4
+*.webp
+*.json.xz
+*.txt
+*/id
