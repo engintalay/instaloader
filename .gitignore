@@ -1,5 +1,6 @@
 .venv/
 *cookies*.json
+!cookies.example.json
 *.jpg
 *.mp4
 *.webp
